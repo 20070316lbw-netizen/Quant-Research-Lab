@@ -9,6 +9,7 @@ P0 数据集包含:
 from __future__ import annotations
 
 import io
+import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -189,7 +190,7 @@ def fetch_cboe_vol_indices(out_path: Path | None = None) -> pd.DataFrame:
             keep = ["date"] + [c for c in col_map if c in df.columns]
             sub = df[keep].rename(columns=col_map)
         else:
-            value_col = [c for c in df.columns if c not in ("DATE", "date")][0]
+            value_col = next(c for c in df.columns if c not in ("DATE", "date"))
             sub = df[["date", value_col]].rename(columns={value_col: f"{key}_close"})
 
         for c in sub.columns:
@@ -260,7 +261,7 @@ def fetch_aqr_factors_daily(out_path: Path | None = None) -> pd.DataFrame | None
             print(f"[P0] Downloading AQR ({key})")
             raw = _download_bytes(url, timeout=90)
             frames.append(_parse_aqr_usa_daily_xlsx(raw, sheet, col_name))
-        except Exception as exc:
+        except (urllib.error.URLError, OSError, ValueError, KeyError) as exc:
             print(f"[P0][WARN] Failed to fetch AQR {key}: {exc}")
 
     if not frames:

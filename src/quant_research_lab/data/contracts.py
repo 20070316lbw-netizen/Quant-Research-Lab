@@ -173,9 +173,12 @@ def validate_timeseries(
             num_df = obj.select_dtypes(include=[np.number])
             if not num_df.empty and np.isinf(num_df.to_numpy(dtype=float, copy=False)).any():
                 raise DataContractError(f"{name}: contains +/-inf values")
-    elif not allow_inf and pd.api.types.is_numeric_dtype(obj.dtype):
-        if np.isinf(obj.to_numpy(dtype=float, copy=False)).any():
-            raise DataContractError(f"{name}: contains +/-inf values")
+    elif (
+        not allow_inf
+        and pd.api.types.is_numeric_dtype(obj.dtype)
+        and np.isinf(obj.to_numpy(dtype=float, copy=False)).any()
+    ):
+        raise DataContractError(f"{name}: contains +/-inf values")
 
     return obj
 

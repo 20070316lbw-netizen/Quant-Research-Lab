@@ -8,7 +8,10 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from datetime import datetime, timezone
+import shutil
+import subprocess
+import tarfile
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +19,7 @@ import duckdb
 from huggingface_hub import HfApi, snapshot_download
 
 DEFAULT_HF_REPO_ID = "2007liuQuant/Quant-Research-Lab"
+DEFAULT_GH_REPO = "20070316lbw-netizen/Quant-Research-Lab"
 
 # 从 lab.duckdb 导出的单文件基表 (prices_calendar 在导入时自动建为 VIEW, 不重复落盘)
 CORE_SINGLE_TABLES: dict[str, str] = {
@@ -103,6 +107,8 @@ def export_duckdb_to_parquet(
 
         if export_prices and "prices" in available:
             prices_dir = data_dir / "prices"
+            if prices_dir.exists():
+                shutil.rmtree(prices_dir)
             prices_dir.mkdir(parents=True, exist_ok=True)
             print(f"[export] Exporting prices (Hive partitioned by year, ZSTD) -> {prices_dir}")
             con.execute(
@@ -214,7 +220,7 @@ def build_manifest_and_card(parquet_root: Path = Path("data/parquet")) -> Path:
     manifest = {
         "repo_id": DEFAULT_HF_REPO_ID,
         "duckdb_version": duckdb.__version__,
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "generated_at_utc": datetime.now(UTC).isoformat(),
         "tables": tables_meta,
     }
     manifest_path = parquet_root / "manifest.json"
@@ -416,4 +422,60 @@ def pull_from_hf(
         local_dir=str(out_dir),
         token=_resolve_hf_token(token),
     )
+    return out_dir
+
+
+def pull_from_github_release(
+    *,
+    tag: str = "data-v1.0.0",
+    repo: str = DEFAULT_GH_REPO,
+    out_dir: Path = Path("data/parquet"),
+) -> Path:
+    """从私有 GitHub Release 拉取并解压锁定版本 Parquet 快照 (HF 的备用镜像通道)
+
+    Args:
+        tag: GitHub Release 标签, 默认 "data-v1.0.0"
+        repo: GitHub 仓库名, 默认 "20070316lbw-netizen/Quant-Research-Lab"
+        out_dir: 解压目标目录, 默认 Path("data/parquet")
+
+    Returns:
+        Path: 解压后的本地 Parquet 根目录
+
+    Raises:
+        subprocess.CalledProcessError: gh CLI 下载失败或未登录
+        FileNotFoundError: Release 中未找到对应 .tar 附件
+
+    Example:
+        >>> out = pull_from_github_release(tag="data-v1.0.0")
+        >>> (out / "manifest.json").exists()
+        True
+    """
+    out_dir.mkdir(parents=True, exist_ok=True)
+    archive_name = f"quant-lab-{tag}.tar"
+    archive_path = out_dir.parent / archive_name
+
+    print(f"[gh] Downloading {repo}@{tag} ({archive_name}) -> {archive_path}")
+    subprocess.run(
+        [
+            "gh",
+            "release",
+            "download",
+            tag,
+            "--repo",
+            repo,
+            "--pattern",
+            archive_name,
+            "--dir",
+            str(out_dir.parent),
+            "--clobber",
+        ],
+        check=True,
+    )
+    if not archive_path.exists():
+        raise FileNotFoundError(f"未找到下载的快照压缩包: {archive_path}")
+
+    print(f"[gh] Extracting {archive_path} -> {out_dir}")
+    with tarfile.open(archive_path, "r") as tf:
+        tf.extractall(path=out_dir, filter="data")
+    archive_path.unlink(missing_ok=True)
     return out_dir

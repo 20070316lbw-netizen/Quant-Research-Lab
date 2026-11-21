@@ -166,7 +166,7 @@ WITH px AS (
         AND o.date BETWEEN s.start_date AND s.end_date
 ),
 raw_events AS (
-    SELECT act_symbol, ex_date, 'split' AS kind, for_factor / to_factor AS value
+    SELECT DISTINCT act_symbol, ex_date, 'split' AS kind, for_factor / to_factor AS value
     FROM read_csv(
         getvariable('stocks_csv_dir') || '/split.csv',
         header = true,
@@ -179,7 +179,7 @@ raw_events AS (
     )
     WHERE to_factor > 0 AND for_factor > 0
     UNION ALL
-    SELECT act_symbol, ex_date, 'dividend' AS kind, amount AS value
+    SELECT DISTINCT act_symbol, ex_date, 'dividend' AS kind, amount AS value
     FROM read_csv(
         getvariable('stocks_csv_dir') || '/dividend.csv',
         header = true,

@@ -6,7 +6,8 @@
 --   3. 财报类型: 仅包含常规季报/年报及其修订版 (10-K, 10-Q, 10-K/A, 10-Q/A)
 --   4. 修订去重: 同一 (fact_kind, cik, taxonomy, tag, unit, start_date, end_date)
 --      在可见记录中取 filed 最新的一条 (同日按 accn 降序)
---   5. 截取期数: 每个指标按 end_date 倒序编号 report_rank (1 为最新), 保留前 n_reports 条 (默认 5)
+--   5. 截取期数: 流量表按会计期间跨度分类 period_type ('Q'/'H'/'9M'/'FY'/'other', 时点表为 'instant'),
+--      各跨度独立按 end_date 倒序编号 report_rank (1 为最新), 保留前 n_reports 条 (默认 5), 避免单季与 YTD/年报混排挤占槽位
 --
 -- 提供 2 个表宏:
 --   - pit_fundamentals(as_of_date, n_reports := 5)
@@ -29,6 +30,7 @@ target_ciks AS (
 visible_facts AS (
     SELECT
         'instant' AS fact_kind,
+        'instant' AS period_type,
         f.cik,
         f.taxonomy,
         f.tag,
@@ -51,6 +53,13 @@ visible_facts AS (
 
     SELECT
         'period' AS fact_kind,
+        CASE
+            WHEN date_diff('day', f.start_date, f.end_date) BETWEEN 60 AND 120 THEN 'Q'
+            WHEN date_diff('day', f.start_date, f.end_date) BETWEEN 150 AND 210 THEN 'H'
+            WHEN date_diff('day', f.start_date, f.end_date) BETWEEN 240 AND 300 THEN '9M'
+            WHEN date_diff('day', f.start_date, f.end_date) BETWEEN 330 AND 395 THEN 'FY'
+            ELSE 'other'
+        END AS period_type,
         f.cik,
         f.taxonomy,
         f.tag,
@@ -82,6 +91,7 @@ ranked AS (
         u.ticker,
         d.cik,
         d.fact_kind,
+        d.period_type,
         d.taxonomy,
         d.tag,
         d.unit,
@@ -95,7 +105,7 @@ ranked AS (
         d.fp,
         d.frame,
         row_number() OVER (
-            PARTITION BY u.ticker, d.fact_kind, d.cik, d.taxonomy, d.tag, d.unit
+            PARTITION BY u.ticker, d.fact_kind, d.period_type, d.cik, d.taxonomy, d.tag, d.unit
             ORDER BY d.end_date DESC, d.start_date DESC NULLS LAST, d.filed DESC, d.accn DESC
         ) AS report_rank
     FROM deduped AS d
@@ -120,6 +130,7 @@ WITH pit_univ AS (
 visible_facts AS (
     SELECT
         'instant' AS fact_kind,
+        'instant' AS period_type,
         f.cik,
         f.taxonomy,
         f.tag,
@@ -142,6 +153,13 @@ visible_facts AS (
 
     SELECT
         'period' AS fact_kind,
+        CASE
+            WHEN date_diff('day', f.start_date, f.end_date) BETWEEN 60 AND 120 THEN 'Q'
+            WHEN date_diff('day', f.start_date, f.end_date) BETWEEN 150 AND 210 THEN 'H'
+            WHEN date_diff('day', f.start_date, f.end_date) BETWEEN 240 AND 300 THEN '9M'
+            WHEN date_diff('day', f.start_date, f.end_date) BETWEEN 330 AND 395 THEN 'FY'
+            ELSE 'other'
+        END AS period_type,
         f.cik,
         f.taxonomy,
         f.tag,
@@ -173,6 +191,7 @@ ranked AS (
         u.ticker,
         d.cik,
         d.fact_kind,
+        d.period_type,
         d.taxonomy,
         d.tag,
         d.unit,
@@ -186,7 +205,7 @@ ranked AS (
         d.fp,
         d.frame,
         row_number() OVER (
-            PARTITION BY u.ticker, d.fact_kind, d.cik, d.taxonomy, d.tag, d.unit
+            PARTITION BY u.ticker, d.fact_kind, d.period_type, d.cik, d.taxonomy, d.tag, d.unit
             ORDER BY d.end_date DESC, d.start_date DESC NULLS LAST, d.filed DESC, d.accn DESC
         ) AS report_rank
     FROM deduped AS d
