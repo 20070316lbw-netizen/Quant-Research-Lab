@@ -1,0 +1,21 @@
+# 中国地级市宏观与环境数据构建配置 (独立于 lab.duckdb)
+paths:
+  yearbook_source_xlsx: "data/统计年鉴数据.xlsx"
+  work_dir: "data/cn_macro"
+  raw_dir: "data/cn_macro/raw"
+  duckdb_path: "data/cn_macro/cn_macro.duckdb"
+  parquet_dir: "data/cn_macro/parquet"
+  deliverables_dir: "data/cn_macro/deliverables"
+
+years:
+  base_year: 2000
+  pm10_start: 2000
+  pm10_end: 2025
+  carbon_start: 2000
+  carbon_end: 2024
+  gdp_start: 2000
+  gdp_end: 2024
+
+hf:
+  repo_id: "2007liuQuant/Quant-Research-Lab"
+  path_in_repo: "cn_macro"
