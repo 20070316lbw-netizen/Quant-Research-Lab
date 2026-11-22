@@ -1,0 +1,1621 @@
+{
+  "config_sha256": "7c8e8ba006ae45ae56df0bd6bab708bb50820a6f598ede7d493c1deae7db6be8",
+  "dataset": "quant-lab-data-v1.0.0",
+  "n_trials": 10,
+  "features": [
+    "mom_20d",
+    "mom_60d",
+    "mom_12m_1m",
+    "vol_60d",
+    "log_volume_ratio"
+  ],
+  "split": {
+    "train": {
+      "rows": 59251,
+      "months": 138,
+      "first": "2012-05-31",
+      "last": "2023-10-31",
+      "no_entry": 58,
+      "proxy_exit": 108
+    },
+    "validation": {
+      "rows": 4858,
+      "months": 10,
+      "first": "2024-01-31",
+      "last": "2024-10-31",
+      "no_entry": 1,
+      "proxy_exit": 5
+    },
+    "test": {
+      "rows": 9314,
+      "months": 19,
+      "first": "2025-01-31",
+      "last": "2026-07-31",
+      "no_entry": 0,
+      "proxy_exit": 17
+    }
+  },
+  "ant_source": "bfbf5d3600d0e31e48f050c1e01aa6d09b629cd7",
+  "lab_source": "2e47445a8a55694f1c7f20a88659160ccfbbc002",
+  "runtime": {
+    "torch": "2.15.0+cpu",
+    "numpy": "2.5.5",
+    "pandas": "3.1.1"
+  },
+  "models": {
+    "momentum": {
+      "rank_ic": {
+        "name": "mean_rank_ic",
+        "estimate": 0.0020712788945090057,
+        "se": 0.03818772789879251,
+        "t_stat": 0.05423938549050202,
+        "p_value": 0.9573419174427805,
+        "ci_low": -0.07815816031479177,
+        "ci_high": 0.08230071810380978,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.15836887588822796,
+        "icir": 0.013078825513485697,
+        "hit_rate": 0.5789473684210527,
+        "nw_lags": 2
+      },
+      "pearson_ic": {
+        "name": "mean_ic",
+        "estimate": 0.025343928494481183,
+        "se": 0.04235719363945101,
+        "t_stat": 0.5983382352998037,
+        "p_value": 0.5570691016918208,
+        "ci_low": -0.06364523318539896,
+        "ci_high": 0.11433309017436132,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.19248037918119895,
+        "icir": 0.1316701920595381,
+        "hit_rate": 0.631578947368421,
+        "nw_lags": 2
+      },
+      "gross_full_spread": {
+        "name": "quantile_long_short",
+        "estimate": 0.00556939810364494,
+        "se": 0.011014754851877659,
+        "t_stat": 0.5056306906998969,
+        "p_value": 0.6192516161383166,
+        "ci_low": -0.017571743132516745,
+        "ci_high": 0.028710539339806624,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "quantile_means": {
+          "Q1": 0.010338177675928116,
+          "Q2": 0.01022212529163491,
+          "Q3": 0.010470604001906622,
+          "Q4": 0.0135086768777921,
+          "Q5": 0.015907575779573056
+        },
+        "monotonicity_rho": 0.8999999999999998,
+        "n_quantiles": 5,
+        "nw_lags": 2
+      },
+      "mean_turnover": 0.4755086269697535,
+      "cost_sensitivity_mean": {
+        "0.0": 0.00278469905182247,
+        "5.0": 0.0025469447383375927,
+        "10.0": 0.002309190424852716,
+        "20.0": 0.001833681797882963
+      },
+      "net_performance": {
+        "annual_return": {
+          "name": "annual_return",
+          "estimate": 0.024982457617861664,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "total_return": 0.03984279012007064,
+          "periods_per_year": 12
+        },
+        "annual_volatility": {
+          "name": "annual_volatility",
+          "estimate": 0.07959513232041784,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "periods_per_year": 12
+        },
+        "sharpe": {
+          "name": "sharpe",
+          "estimate": 0.3481404489244666,
+          "se": 0.8325709078321529,
+          "t_stat": 0.4181511095925202,
+          "p_value": 0.67583663878274,
+          "ci_low": -1.28366854500237,
+          "ci_high": 1.9799494428513031,
+          "n_obs": 19,
+          "warnings": [
+            "有效样本量偏小 (n_obs=19 < 30), Sharpe 置信区间较宽"
+          ],
+          "sharpe_per_period": 0.10049949095116899,
+          "sharpe_lo_adjusted": 0.332905193794335,
+          "lo_eta": 1.0936234861423628,
+          "lo_lags": 2,
+          "skew": -0.32006380757800407,
+          "kurtosis": 4.007965965945168
+        },
+        "sortino": {
+          "name": "sortino",
+          "estimate": 0.5195278300903629,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "downside_vol_ann": 0.053337441217370135
+        },
+        "calmar": {
+          "name": "calmar",
+          "estimate": 0.36071673375234314,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "max_drawdown": -0.06925782831858818
+        },
+        "max_drawdown": {
+          "name": "max_drawdown",
+          "estimate": -0.06925782831858818,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "peak_date": "2026-05-29",
+          "trough_date": "2026-07-31",
+          "max_underwater_periods": 11
+        }
+      },
+      "net_dsr": {
+        "name": "DSR",
+        "estimate": 0.1300728872974805,
+        "se": 0.24034251887817232,
+        "t_stat": -1.1260466485671958,
+        "p_value": 0.8699271127025194,
+        "ci_low": null,
+        "ci_high": null,
+        "n_obs": 19,
+        "warnings": [
+          "样本量偏小 (n_obs=19 < 30), PSR 近似精度有限",
+          "未提供试验间 Sharpe 方差 sr_variance, 已回退使用零假设近似方差 1/(T-1)"
+        ],
+        "observed_sr_ann": 0.3481404489244666,
+        "observed_sr_per_period": 0.10049949095116899,
+        "benchmark_sr_ann": 1.28565412938341,
+        "skew": -0.32006380757800407,
+        "kurtosis": 4.007965965945168,
+        "n_trials": 10,
+        "sr_variance": 0.05555555555555555,
+        "sr_star_per_period": 0.3711363788421329,
+        "sr_star_ann": 1.28565412938341
+      }
+    },
+    "ridge": {
+      "rank_ic": {
+        "name": "mean_rank_ic",
+        "estimate": 0.023096191621500707,
+        "se": 0.023340767354626018,
+        "t_stat": 0.989521521318928,
+        "p_value": 0.3355241051210156,
+        "ci_low": -0.025940940949971604,
+        "ci_high": 0.07213332419297303,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.13609582620226152,
+        "icir": 0.16970536324292446,
+        "hit_rate": 0.5263157894736842,
+        "nw_lags": 2
+      },
+      "pearson_ic": {
+        "name": "mean_ic",
+        "estimate": 0.002295151527436294,
+        "se": 0.024492114190673726,
+        "t_stat": 0.09370981653802093,
+        "p_value": 0.9263748921058755,
+        "ci_low": -0.049160870987850436,
+        "ci_high": 0.05375117404272302,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.1476680909901308,
+        "icir": 0.015542636950522284,
+        "hit_rate": 0.5263157894736842,
+        "nw_lags": 2
+      },
+      "gross_full_spread": {
+        "name": "quantile_long_short",
+        "estimate": -0.0002228007884324465,
+        "se": 0.006153868491710795,
+        "t_stat": -0.03620499669964627,
+        "p_value": 0.9715173981714256,
+        "ci_low": -0.013151598735412532,
+        "ci_high": 0.012705997158547639,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "quantile_means": {
+          "Q1": 0.011656490295551644,
+          "Q2": 0.011311872887460437,
+          "Q3": 0.012689097964563087,
+          "Q4": 0.013307445750657194,
+          "Q5": 0.011433689507119196
+        },
+        "monotonicity_rho": 0.19999999999999998,
+        "n_quantiles": 5,
+        "nw_lags": 2
+      },
+      "mean_turnover": 1.5659630958057382,
+      "cost_sensitivity_mean": {
+        "0.0": -0.00011140039421622325,
+        "5.0": -0.0008943819421190913,
+        "10.0": -0.0016773634900219612,
+        "20.0": -0.0032433265858276997
+      },
+      "net_performance": {
+        "annual_return": {
+          "name": "annual_return",
+          "estimate": -0.022388764238606695,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "total_return": -0.035216667973920424,
+          "periods_per_year": 12
+        },
+        "annual_volatility": {
+          "name": "annual_volatility",
+          "estimate": 0.07206757546635148,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "periods_per_year": 12
+        },
+        "sharpe": {
+          "name": "sharpe",
+          "estimate": -0.2792984466316827,
+          "se": 0.7871809121721666,
+          "t_stat": -0.3548084592917524,
+          "p_value": 0.7227330905820619,
+          "ci_low": -1.8221446838065165,
+          "ci_high": 1.2635477905431514,
+          "n_obs": 19,
+          "warnings": [
+            "有效样本量偏小 (n_obs=19 < 30), Sharpe 置信区间较宽"
+          ],
+          "sharpe_per_period": -0.08062651667352316,
+          "sharpe_lo_adjusted": -0.4349468442033339,
+          "lo_eta": 0.4123487404793945,
+          "lo_lags": 2,
+          "skew": -0.9147335898840618,
+          "kurtosis": 2.9890153340384735
+        },
+        "sortino": {
+          "name": "sortino",
+          "estimate": -0.3410811564287362,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "downside_vol_ann": 0.059013409274836476
+        },
+        "calmar": {
+          "name": "calmar",
+          "estimate": -0.2663031461786914,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "max_drawdown": -0.08407247364469239
+        },
+        "max_drawdown": {
+          "name": "max_drawdown",
+          "estimate": -0.08407247364469239,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "peak_date": "2025-01-31",
+          "trough_date": "2026-04-30",
+          "max_underwater_periods": 18
+        }
+      },
+      "net_dsr": {
+        "name": "DSR",
+        "estimate": 0.02340325134121532,
+        "se": 0.22723955577176777,
+        "t_stat": -1.9880469048680611,
+        "p_value": 0.9765967486587847,
+        "ci_low": null,
+        "ci_high": null,
+        "n_obs": 19,
+        "warnings": [
+          "样本量偏小 (n_obs=19 < 30), PSR 近似精度有限",
+          "未提供试验间 Sharpe 方差 sr_variance, 已回退使用零假设近似方差 1/(T-1)"
+        ],
+        "observed_sr_ann": -0.2792984466316827,
+        "observed_sr_per_period": -0.08062651667352316,
+        "benchmark_sr_ann": 1.28565412938341,
+        "skew": -0.9147335898840618,
+        "kurtosis": 2.9890153340384735,
+        "n_trials": 10,
+        "sr_variance": 0.05555555555555555,
+        "sr_star_per_period": 0.3711363788421329,
+        "sr_star_ann": 1.28565412938341
+      }
+    },
+    "vanilla": {
+      "rank_ic": {
+        "name": "mean_rank_ic",
+        "estimate": 0.03301028229224915,
+        "se": 0.024130466941660888,
+        "t_stat": 1.367991857433036,
+        "p_value": 0.18815130548985634,
+        "ci_low": -0.01768594754679397,
+        "ci_high": 0.08370651213129227,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.10548032662759266,
+        "icir": 0.3129520295172652,
+        "hit_rate": 0.631578947368421,
+        "nw_lags": 2
+      },
+      "pearson_ic": {
+        "name": "mean_ic",
+        "estimate": 0.045307862860814105,
+        "se": 0.02312700837358158,
+        "t_stat": 1.9590887904278245,
+        "p_value": 0.06577817845040854,
+        "ci_low": -0.003280178756082483,
+        "ci_high": 0.09389590447771069,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.10557661099459693,
+        "icir": 0.42914678198121753,
+        "hit_rate": 0.631578947368421,
+        "nw_lags": 2
+      },
+      "gross_full_spread": {
+        "name": "quantile_long_short",
+        "estimate": 0.008872708316208417,
+        "se": 0.006152398343768421,
+        "t_stat": 1.4421543958049003,
+        "p_value": 0.16643325127863104,
+        "ci_low": -0.0040530009645571175,
+        "ci_high": 0.02179841759697395,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "quantile_means": {
+          "Q1": 0.005863393389759129,
+          "Q2": 0.008236535836745065,
+          "Q3": 0.015310190007084454,
+          "Q4": 0.01642252161974217,
+          "Q5": 0.01473610170596755
+        },
+        "monotonicity_rho": 0.7,
+        "n_quantiles": 5,
+        "nw_lags": 2
+      },
+      "mean_turnover": 1.1912440538128435,
+      "cost_sensitivity_mean": {
+        "0.0": 0.0044363541581042085,
+        "5.0": 0.0038407321311977882,
+        "10.0": 0.0032451101042913657,
+        "20.0": 0.002053866050478522
+      },
+      "net_performance": {
+        "annual_return": {
+          "name": "annual_return",
+          "estimate": 0.03833589147906502,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "total_return": 0.061373617570560146,
+          "periods_per_year": 12
+        },
+        "annual_volatility": {
+          "name": "annual_volatility",
+          "estimate": 0.051813553038356164,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "periods_per_year": 12
+        },
+        "sharpe": {
+          "name": "sharpe",
+          "estimate": 0.7515663174588545,
+          "se": 0.7890619553769596,
+          "t_stat": 0.9524807429092279,
+          "p_value": 0.3408532276617695,
+          "ci_low": -0.7949666966507374,
+          "ci_high": 2.298099331568446,
+          "n_obs": 19,
+          "warnings": [
+            "有效样本量偏小 (n_obs=19 < 30), Sharpe 置信区间较宽"
+          ],
+          "sharpe_per_period": 0.21695850784936271,
+          "sharpe_lo_adjusted": 0.84123159415488,
+          "lo_eta": 0.7981848243040013,
+          "lo_lags": 2,
+          "skew": 0.4372153145272721,
+          "kurtosis": 3.4461549552389434
+        },
+        "sortino": {
+          "name": "sortino",
+          "estimate": 1.4046295162633289,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "downside_vol_ann": 0.027723553293319783
+        },
+        "calmar": {
+          "name": "calmar",
+          "estimate": 1.2777677621379797,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "max_drawdown": -0.030002237194434178
+        },
+        "max_drawdown": {
+          "name": "max_drawdown",
+          "estimate": -0.030002237194434178,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "peak_date": null,
+          "trough_date": "2025-02-28",
+          "max_underwater_periods": 4
+        }
+      },
+      "net_dsr": {
+        "name": "DSR",
+        "estimate": 0.24924605093592545,
+        "se": 0.22778256617209006,
+        "t_stat": -0.6768642288290342,
+        "p_value": 0.7507539490640746,
+        "ci_low": null,
+        "ci_high": null,
+        "n_obs": 19,
+        "warnings": [
+          "样本量偏小 (n_obs=19 < 30), PSR 近似精度有限",
+          "未提供试验间 Sharpe 方差 sr_variance, 已回退使用零假设近似方差 1/(T-1)"
+        ],
+        "observed_sr_ann": 0.7515663174588545,
+        "observed_sr_per_period": 0.21695850784936271,
+        "benchmark_sr_ann": 1.28565412938341,
+        "skew": 0.4372153145272721,
+        "kurtosis": 3.4461549552389434,
+        "n_trials": 10,
+        "sr_variance": 0.05555555555555555,
+        "sr_star_per_period": 0.3711363788421329,
+        "sr_star_ann": 1.28565412938341
+      }
+    },
+    "cross_only": {
+      "rank_ic": {
+        "name": "mean_rank_ic",
+        "estimate": 0.004215902071592676,
+        "se": 0.026677314282143892,
+        "t_stat": 0.15803322729584268,
+        "p_value": 0.8761900091543481,
+        "ci_low": -0.05183105547820046,
+        "ci_high": 0.06026285962138581,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.11131194388622442,
+        "icir": 0.03787466038596799,
+        "hit_rate": 0.5263157894736842,
+        "nw_lags": 2
+      },
+      "pearson_ic": {
+        "name": "mean_ic",
+        "estimate": -0.00013223865666427357,
+        "se": 0.024080038883441235,
+        "t_stat": -0.00549162969812346,
+        "p_value": 0.9956787417080717,
+        "ci_low": -0.05072252307674716,
+        "ci_high": 0.05045804576341862,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.10313171815344425,
+        "icir": -0.001282230714585038,
+        "hit_rate": 0.5263157894736842,
+        "nw_lags": 2
+      },
+      "gross_full_spread": {
+        "name": "quantile_long_short",
+        "estimate": -0.0009825952683578526,
+        "se": 0.0060220908410165384,
+        "t_stat": -0.16316513554816933,
+        "p_value": 0.872206350840249,
+        "ci_low": -0.013634538644583189,
+        "ci_high": 0.011669348107867484,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "quantile_means": {
+          "Q1": 0.013339492317970781,
+          "Q2": 0.01292061097502537,
+          "Q3": 0.012959253949519809,
+          "Q4": 0.008845570839279159,
+          "Q5": 0.012356897049612929
+        },
+        "monotonicity_rho": -0.7999999999999999,
+        "n_quantiles": 5,
+        "nw_lags": 2
+      },
+      "mean_turnover": 0.9570275042719018,
+      "cost_sensitivity_mean": {
+        "0.0": -0.0004912976341789263,
+        "5.0": -0.0009698113863148772,
+        "10.0": -0.0014483251384508284,
+        "20.0": -0.00240535264272273
+      },
+      "net_performance": {
+        "annual_return": {
+          "name": "annual_return",
+          "estimate": -0.01827826265385024,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "total_return": -0.028785901422791582,
+          "periods_per_year": 12
+        },
+        "annual_volatility": {
+          "name": "annual_volatility",
+          "estimate": 0.04708314952410814,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "periods_per_year": 12
+        },
+        "sharpe": {
+          "name": "sharpe",
+          "estimate": -0.3691320958151037,
+          "se": 0.8111922382369533,
+          "t_stat": -0.4550488508338986,
+          "p_value": 0.6490740947453695,
+          "ci_low": -1.9590396672979675,
+          "ci_high": 1.2207754756677602,
+          "n_obs": 19,
+          "warnings": [
+            "有效样本量偏小 (n_obs=19 < 30), Sharpe 置信区间较宽"
+          ],
+          "sharpe_per_period": -0.10655925744269043,
+          "sharpe_lo_adjusted": -0.38263919080549647,
+          "lo_eta": 0.9306464351237564,
+          "lo_lags": 2,
+          "skew": -0.1754097797242427,
+          "kurtosis": 3.022323192149423
+        },
+        "sortino": {
+          "name": "sortino",
+          "estimate": -0.4818168916313522,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "downside_vol_ann": 0.036071590604813526
+        },
+        "calmar": {
+          "name": "calmar",
+          "estimate": -0.28015404149901696,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "max_drawdown": -0.06524361581952898
+        },
+        "max_drawdown": {
+          "name": "max_drawdown",
+          "estimate": -0.06524361581952898,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "peak_date": "2025-04-30",
+          "trough_date": "2026-07-31",
+          "max_underwater_periods": 15
+        }
+      },
+      "net_dsr": {
+        "name": "DSR",
+        "estimate": 0.020677983391428057,
+        "se": 0.23417102855532002,
+        "t_stat": -2.039943366316016,
+        "p_value": 0.979322016608572,
+        "ci_low": null,
+        "ci_high": null,
+        "n_obs": 19,
+        "warnings": [
+          "样本量偏小 (n_obs=19 < 30), PSR 近似精度有限",
+          "未提供试验间 Sharpe 方差 sr_variance, 已回退使用零假设近似方差 1/(T-1)"
+        ],
+        "observed_sr_ann": -0.3691320958151037,
+        "observed_sr_per_period": -0.10655925744269043,
+        "benchmark_sr_ann": 1.28565412938341,
+        "skew": -0.1754097797242427,
+        "kurtosis": 3.022323192149423,
+        "n_trials": 10,
+        "sr_variance": 0.05555555555555555,
+        "sr_star_per_period": 0.3711363788421329,
+        "sr_star_ann": 1.28565412938341
+      }
+    },
+    "gate_only": {
+      "rank_ic": {
+        "name": "mean_rank_ic",
+        "estimate": 0.04616865295220721,
+        "se": 0.03471410272491231,
+        "t_stat": 1.3299682068139598,
+        "p_value": 0.2001365012434019,
+        "ci_low": -0.02676297056975254,
+        "ci_high": 0.11910027647416696,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.1258995036877779,
+        "icir": 0.3667103650122585,
+        "hit_rate": 0.631578947368421,
+        "nw_lags": 2
+      },
+      "pearson_ic": {
+        "name": "mean_ic",
+        "estimate": 0.05532357144779285,
+        "se": 0.033799325182326256,
+        "t_stat": 1.6368247339068673,
+        "p_value": 0.11903088965149865,
+        "ci_low": -0.015686175773030324,
+        "ci_high": 0.12633331866861602,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.11662041671011152,
+        "icir": 0.47439010259509773,
+        "hit_rate": 0.7368421052631579,
+        "nw_lags": 2
+      },
+      "gross_full_spread": {
+        "name": "quantile_long_short",
+        "estimate": 0.011398191028370376,
+        "se": 0.008006541773646519,
+        "t_stat": 1.4236097619433459,
+        "p_value": 0.17166311278917692,
+        "ci_low": -0.00542292904999417,
+        "ci_high": 0.028219311106734923,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "quantile_means": {
+          "Q1": 0.006625548651658783,
+          "Q2": 0.008091577126682738,
+          "Q3": 0.010114186482813594,
+          "Q4": 0.017670400358352146,
+          "Q5": 0.018023739680029155
+        },
+        "monotonicity_rho": 0.9999999999999999,
+        "n_quantiles": 5,
+        "nw_lags": 2
+      },
+      "mean_turnover": 1.1303496949183305,
+      "cost_sensitivity_mean": {
+        "0.0": 0.005699095514185188,
+        "5.0": 0.005133920666726022,
+        "10.0": 0.004568745819266857,
+        "20.0": 0.0034383961243485256
+      },
+      "net_performance": {
+        "annual_return": {
+          "name": "annual_return",
+          "estimate": 0.05488000826191897,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "total_return": 0.0882738186687666,
+          "periods_per_year": 12
+        },
+        "annual_volatility": {
+          "name": "annual_volatility",
+          "estimate": 0.05194848332486287,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "periods_per_year": 12
+        },
+        "sharpe": {
+          "name": "sharpe",
+          "estimate": 1.0553715204417282,
+          "se": 0.8975166585091807,
+          "t_stat": 1.175879590017585,
+          "p_value": 0.2396429958651659,
+          "ci_low": -0.7037288057610007,
+          "ci_high": 2.814471846644457,
+          "n_obs": 19,
+          "warnings": [
+            "有效样本量偏小 (n_obs=19 < 30), Sharpe 置信区间较宽"
+          ],
+          "sharpe_per_period": 0.3046595157110482,
+          "sharpe_lo_adjusted": 0.9079104891411284,
+          "lo_eta": 1.3512156719571262,
+          "lo_lags": 2,
+          "skew": -0.5313876597292202,
+          "kurtosis": 3.0001383846969123
+        },
+        "sortino": {
+          "name": "sortino",
+          "estimate": 1.8224657710074712,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "downside_vol_ann": 0.030082841995377883
+        },
+        "calmar": {
+          "name": "calmar",
+          "estimate": 1.0196827298222715,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "max_drawdown": -0.053820670544733495
+        },
+        "max_drawdown": {
+          "name": "max_drawdown",
+          "estimate": -0.053820670544733495,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "peak_date": "2025-07-31",
+          "trough_date": "2026-01-30",
+          "max_underwater_periods": 12
+        }
+      },
+      "net_dsr": {
+        "name": "DSR",
+        "estimate": 0.39875246077150456,
+        "se": 0.25909074219622447,
+        "t_stat": -0.25657753174653347,
+        "p_value": 0.6012475392284954,
+        "ci_low": null,
+        "ci_high": null,
+        "n_obs": 19,
+        "warnings": [
+          "样本量偏小 (n_obs=19 < 30), PSR 近似精度有限",
+          "未提供试验间 Sharpe 方差 sr_variance, 已回退使用零假设近似方差 1/(T-1)"
+        ],
+        "observed_sr_ann": 1.0553715204417282,
+        "observed_sr_per_period": 0.3046595157110482,
+        "benchmark_sr_ann": 1.28565412938341,
+        "skew": -0.5313876597292202,
+        "kurtosis": 3.0001383846969123,
+        "n_trials": 10,
+        "sr_variance": 0.05555555555555555,
+        "sr_star_per_period": 0.3711363788421329,
+        "sr_star_ann": 1.28565412938341
+      }
+    },
+    "ant_full": {
+      "rank_ic": {
+        "name": "mean_rank_ic",
+        "estimate": 0.023317140127881764,
+        "se": 0.014224268678056482,
+        "t_stat": 1.639250541144002,
+        "p_value": 0.11852097837866737,
+        "ci_low": -0.0065669394441573575,
+        "ci_high": 0.053201219699920886,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.0693020864172513,
+        "icir": 0.33645653880454385,
+        "hit_rate": 0.631578947368421,
+        "nw_lags": 2
+      },
+      "pearson_ic": {
+        "name": "mean_ic",
+        "estimate": 0.027346720230089754,
+        "se": 0.01483146489088164,
+        "t_stat": 1.8438313700828346,
+        "p_value": 0.08173401519232992,
+        "ci_low": -0.00381303124822463,
+        "ci_high": 0.05850647170840414,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "ic_std": 0.0758920100654355,
+        "icir": 0.3603372766976511,
+        "hit_rate": 0.6842105263157895,
+        "nw_lags": 2
+      },
+      "gross_full_spread": {
+        "name": "quantile_long_short",
+        "estimate": 0.007897357394419807,
+        "se": 0.003624037414157071,
+        "t_stat": 2.179160006342452,
+        "p_value": 0.04284870144751262,
+        "ci_low": 0.00028353731635907646,
+        "ci_high": 0.015511177472480537,
+        "n_obs": 19,
+        "warnings": [
+          "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+        ],
+        "quantile_means": {
+          "Q1": 0.007330287439887452,
+          "Q2": 0.012156258493925405,
+          "Q3": 0.011661262496325925,
+          "Q4": 0.014077088237256376,
+          "Q5": 0.01522764483430726
+        },
+        "monotonicity_rho": 0.8999999999999998,
+        "n_quantiles": 5,
+        "nw_lags": 2
+      },
+      "mean_turnover": 1.3660974914637374,
+      "cost_sensitivity_mean": {
+        "0.0": 0.003948678697209903,
+        "5.0": 0.0032656299514780347,
+        "10.0": 0.0025825812057461662,
+        "20.0": 0.0012164837142824283
+      },
+      "net_performance": {
+        "annual_return": {
+          "name": "annual_return",
+          "estimate": 0.030891152114877807,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "total_return": 0.04934980458680882,
+          "periods_per_year": 12
+        },
+        "annual_volatility": {
+          "name": "annual_volatility",
+          "estimate": 0.03349176938774721,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "periods_per_year": 12
+        },
+        "sharpe": {
+          "name": "sharpe",
+          "estimate": 0.9253310600034131,
+          "se": 0.784496890451163,
+          "t_stat": 1.179521641534177,
+          "p_value": 0.23819052432279908,
+          "ci_low": -0.6122545912645306,
+          "ci_high": 2.462916711271357,
+          "n_obs": 19,
+          "warnings": [
+            "有效样本量偏小 (n_obs=19 < 30), Sharpe 置信区间较宽"
+          ],
+          "sharpe_per_period": 0.2671200682912462,
+          "sharpe_lo_adjusted": 1.1395887113829166,
+          "lo_eta": 0.6593226616052059,
+          "lo_lags": 2,
+          "skew": 0.41343899964794145,
+          "kurtosis": 2.8830798366051105
+        },
+        "sortino": {
+          "name": "sortino",
+          "estimate": 1.9296504562236125,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "downside_vol_ann": 0.01606040843770447
+        },
+        "calmar": {
+          "name": "calmar",
+          "estimate": 1.7850123789597618,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "max_drawdown": -0.017305847555455056
+        },
+        "max_drawdown": {
+          "name": "max_drawdown",
+          "estimate": -0.017305847555455056,
+          "se": null,
+          "t_stat": null,
+          "p_value": null,
+          "ci_low": null,
+          "ci_high": null,
+          "n_obs": 19,
+          "warnings": [],
+          "peak_date": null,
+          "trough_date": "2025-04-30",
+          "max_underwater_periods": 5
+        }
+      },
+      "net_dsr": {
+        "name": "DSR",
+        "estimate": 0.3230077046537557,
+        "se": 0.22646474544020168,
+        "t_stat": -0.4593046495987711,
+        "p_value": 0.6769922953462443,
+        "ci_low": null,
+        "ci_high": null,
+        "n_obs": 19,
+        "warnings": [
+          "样本量偏小 (n_obs=19 < 30), PSR 近似精度有限",
+          "未提供试验间 Sharpe 方差 sr_variance, 已回退使用零假设近似方差 1/(T-1)"
+        ],
+        "observed_sr_ann": 0.9253310600034131,
+        "observed_sr_per_period": 0.2671200682912462,
+        "benchmark_sr_ann": 1.28565412938341,
+        "skew": 0.41343899964794145,
+        "kurtosis": 2.8830798366051105,
+        "n_trials": 10,
+        "sr_variance": 0.05555555555555555,
+        "sr_star_per_period": 0.3711363788421329,
+        "sr_star_ann": 1.28565412938341
+      }
+    }
+  },
+  "paired_ant_full_minus": {
+    "vanilla": {
+      "name": "mean_rank_ic_delta",
+      "estimate": -0.009693142164367393,
+      "se": 0.024580879029056812,
+      "t_stat": -0.3943366774194375,
+      "p_value": 0.6979654489835659,
+      "ci_low": -0.06133565268501158,
+      "ci_high": 0.0419493683562768,
+      "n_obs": 19,
+      "warnings": [
+        "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+      ],
+      "ic_std": 0.13129787735038673,
+      "icir": -0.07382558164668489,
+      "hit_rate": 0.5263157894736842,
+      "nw_lags": 2
+    },
+    "ridge": {
+      "name": "mean_rank_ic_delta",
+      "estimate": 0.0002209485063810528,
+      "se": 0.022757769846787866,
+      "t_stat": 0.009708706427235377,
+      "p_value": 0.9923604909012074,
+      "ci_low": -0.04759135175146849,
+      "ci_high": 0.048033248764230596,
+      "n_obs": 19,
+      "warnings": [
+        "有效样本量偏小 (n_obs=19 < 30), 渐近检验可能不稳定"
+      ],
+      "ic_std": 0.16389315515576416,
+      "icir": 0.0013481252842503593,
+      "hit_rate": 0.47368421052631576,
+      "nw_lags": 2
+    }
+  },
+  "holm": {
+    "momentum": {
+      "p_raw": 0.9573419174427805,
+      "p_adj": 1.0,
+      "reject_05": false,
+      "reject_01": false
+    },
+    "ridge": {
+      "p_raw": 0.3355241051210156,
+      "p_adj": 1.0,
+      "reject_05": false,
+      "reject_01": false
+    },
+    "vanilla": {
+      "p_raw": 0.18815130548985634,
+      "p_adj": 1.0,
+      "reject_05": false,
+      "reject_01": false
+    },
+    "cross_only": {
+      "p_raw": 0.8761900091543481,
+      "p_adj": 1.0,
+      "reject_05": false,
+      "reject_01": false
+    },
+    "gate_only": {
+      "p_raw": 0.2001365012434019,
+      "p_adj": 1.0,
+      "reject_05": false,
+      "reject_01": false
+    },
+    "ant_full": {
+      "p_raw": 0.11852097837866737,
+      "p_adj": 0.948167827029339,
+      "reject_05": false,
+      "reject_01": false
+    },
+    "ant_full_minus_vanilla": {
+      "p_raw": 0.6979654489835659,
+      "p_adj": 1.0,
+      "reject_05": false,
+      "reject_01": false
+    },
+    "ant_full_minus_ridge": {
+      "p_raw": 0.9923604909012074,
+      "p_adj": 1.0,
+      "reject_05": false,
+      "reject_01": false
+    }
+  },
+  "training_runs": {
+    "vanilla_42": {
+      "best_epoch": 5,
+      "parameters": 39521,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_rank_ic": -0.027247754185419876,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 2,
+          "validation_rank_ic": -0.01117108865619255,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 3,
+          "validation_rank_ic": -0.019125737156232017,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 4,
+          "validation_rank_ic": -0.004352256617571783,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 5,
+          "validation_rank_ic": -0.0009136432730842275,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    "vanilla_43": {
+      "best_epoch": 4,
+      "parameters": 39521,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_rank_ic": 0.026722235451517036,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 2,
+          "validation_rank_ic": 0.02263194372746366,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 3,
+          "validation_rank_ic": 0.01296263675520572,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 4,
+          "validation_rank_ic": 0.026998790679628504,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 5,
+          "validation_rank_ic": -0.05320032435453152,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    "cross_only_42": {
+      "best_epoch": 1,
+      "parameters": 56673,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_rank_ic": -0.007496249434654842,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 2,
+          "validation_rank_ic": -0.022859961791186104,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 3,
+          "validation_rank_ic": -0.026398688289124166,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 4,
+          "validation_rank_ic": -0.02774978312676866,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 5,
+          "validation_rank_ic": -0.031170027864086586,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    "cross_only_43": {
+      "best_epoch": 1,
+      "parameters": 56673,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_rank_ic": 0.021828378860507414,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 2,
+          "validation_rank_ic": -0.009639083304626175,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 3,
+          "validation_rank_ic": -0.02377754395264358,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 4,
+          "validation_rank_ic": -0.020945839998540758,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "epoch": 5,
+          "validation_rank_ic": -0.025234360933418697,
+          "training_gate_means": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    "gate_only_42": {
+      "best_epoch": 2,
+      "parameters": 39521,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_rank_ic": -0.010842104338125018,
+          "training_gate_means": [
+            0.4994001705148238,
+            0.4998695358212243,
+            0.4988798074618796,
+            0.499034113579043
+          ]
+        },
+        {
+          "epoch": 2,
+          "validation_rank_ic": 0.024609406568934445,
+          "training_gate_means": [
+            0.49628898606570193,
+            0.4971766354929004,
+            0.496611032503506,
+            0.4963204436208751
+          ]
+        },
+        {
+          "epoch": 3,
+          "validation_rank_ic": -0.0033061068791974584,
+          "training_gate_means": [
+            0.491745666492575,
+            0.4929791893593436,
+            0.4934067398511404,
+            0.4926590918931287
+          ]
+        },
+        {
+          "epoch": 4,
+          "validation_rank_ic": 0.0012569833930041769,
+          "training_gate_means": [
+            0.48626212418965636,
+            0.4880393653199155,
+            0.48942138601827395,
+            0.4882387996063951
+          ]
+        },
+        {
+          "epoch": 5,
+          "validation_rank_ic": 0.017594064026978516,
+          "training_gate_means": [
+            0.48013092070373814,
+            0.48244145021517304,
+            0.48484384200958897,
+            0.4833842322578153
+          ]
+        }
+      ]
+    },
+    "gate_only_43": {
+      "best_epoch": 4,
+      "parameters": 39521,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_rank_ic": 0.04024493070264931,
+          "training_gate_means": [
+            0.4992520012889089,
+            0.49978677766662827,
+            0.4999818473692691,
+            0.49942133364738833
+          ]
+        },
+        {
+          "epoch": 2,
+          "validation_rank_ic": 0.039392057750638074,
+          "training_gate_means": [
+            0.49586632036421985,
+            0.497027553072845,
+            0.4981603279119564,
+            0.4970920318929546
+          ]
+        },
+        {
+          "epoch": 3,
+          "validation_rank_ic": 0.041417064052883014,
+          "training_gate_means": [
+            0.4908431242235429,
+            0.4927640015725934,
+            0.4953029795004119,
+            0.49361448714011685
+          ]
+        },
+        {
+          "epoch": 4,
+          "validation_rank_ic": 0.06340164141198625,
+          "training_gate_means": [
+            0.48501366418624525,
+            0.4877793759093003,
+            0.49174722144638777,
+            0.4893499637293503
+          ]
+        },
+        {
+          "epoch": 5,
+          "validation_rank_ic": 0.02126303955829138,
+          "training_gate_means": [
+            0.47844506182434554,
+            0.48205914378027376,
+            0.4876506783723191,
+            0.48444459178019544
+          ]
+        }
+      ]
+    },
+    "ant_full_42": {
+      "best_epoch": 4,
+      "parameters": 56673,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_rank_ic": -0.028356871960574292,
+          "training_gate_means": [
+            0.49836616794887295,
+            0.47539286621431626,
+            0.5019489515019063,
+            0.49999315902731334
+          ]
+        },
+        {
+          "epoch": 2,
+          "validation_rank_ic": -0.02337803755216653,
+          "training_gate_means": [
+            0.49350536584842053,
+            0.24402423807201368,
+            0.24803949424871258,
+            0.3629317855905781
+          ]
+        },
+        {
+          "epoch": 3,
+          "validation_rank_ic": -0.04831483797382574,
+          "training_gate_means": [
+            0.4877623847296617,
+            0.07147821485397696,
+            0.053620329732277316,
+            0.21446738525015666
+          ]
+        },
+        {
+          "epoch": 4,
+          "validation_rank_ic": -0.021612597412947077,
+          "training_gate_means": [
+            0.4813130415050682,
+            0.037603946338192654,
+            0.009929202783580764,
+            0.13161472098374394
+          ]
+        },
+        {
+          "epoch": 5,
+          "validation_rank_ic": -0.025344328148874502,
+          "training_gate_means": [
+            0.4739715441742281,
+            0.03318330738663611,
+            0.0018721928131900049,
+            0.10550486031279734
+          ]
+        }
+      ]
+    },
+    "ant_full_43": {
+      "best_epoch": 1,
+      "parameters": 56673,
+      "history": [
+        {
+          "epoch": 1,
+          "validation_rank_ic": 0.04002150284709828,
+          "training_gate_means": [
+            0.4986435703699226,
+            0.47403640001526876,
+            0.45216246813822897,
+            0.45813200226759754
+          ]
+        },
+        {
+          "epoch": 2,
+          "validation_rank_ic": -0.010989852488494774,
+          "training_gate_means": [
+            0.4940753066387461,
+            0.3082727795140061,
+            0.3183899407358532,
+            0.3184139271474255
+          ]
+        },
+        {
+          "epoch": 3,
+          "validation_rank_ic": -0.04034179139582426,
+          "training_gate_means": [
+            0.48863541377960656,
+            0.155204672513315,
+            0.12406735251948625,
+            0.16079324952552224
+          ]
+        },
+        {
+          "epoch": 4,
+          "validation_rank_ic": -0.021297443782272312,
+          "training_gate_means": [
+            0.4825175260343048,
+            0.10743020075013074,
+            0.04560866053863987,
+            0.08377663009315722
+          ]
+        },
+        {
+          "epoch": 5,
+          "validation_rank_ic": -0.05443861126400795,
+          "training_gate_means": [
+            0.47583194005213914,
+            0.05449243931083771,
+            0.03444630226801865,
+            0.06824292246676629
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,53 @@
+meta:
+  card_id: eq-cs-002
+  name: ant_transformer_pilot
+  seed: 42
+  notes: "Price/volume adaptation to US equities; primary metric monthly Rank IC"
+data:
+  dataset_version: quant-lab-data-v1.0.0
+  db_path: data/lab.duckdb
+  start_date: 2011-01-03
+  end_date: 2026-09-04
+  universe: SP500
+  tables: [prices, universe, calendar]
+split:
+  method: holdout
+  is_end_date: 2023-12-31
+  oos_start_date: 2025-01-01
+  purge_days: 0
+execution:
+  rebalance_freq: monthly
+  signal_lag_days: 1
+  price_field: open
+  weighting: equal
+  min_history_days: 252
+  long_short: {enabled: true, n_quantiles: 5}
+  cost_bps_default: 10
+  cost_bps_grid: [0, 5, 10, 20]
+audit:
+  n_trials: 10
+  annualization_factor: 12
+  p_adjust_method: holm
+  nw_lags: 2
+model:
+  family: other
+  params:
+    validation_end: 2024-12-31
+    last_signal: 2026-07-31
+    seq_len: 6
+    d_model: 32
+    num_heads: 4
+    cross_layer_heads: 2
+    d_ff: 64
+    gate_hidden_dim: 16
+    dropout: 0.1
+    gate_lambda: 0.08
+    batch_size: 1024
+    epochs: 5
+    lr: 0.001
+    second_seed: 43
+    ridge_alpha: 100
+    threads: 4
+output:
+  dir: outputs/eq-cs-002
+  save_weights: false
