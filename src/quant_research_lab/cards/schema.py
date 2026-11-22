@@ -35,6 +35,7 @@ ModelFamily = Literal[
 ]
 Feasibility = Literal["ready", "needs_fundamental", "needs_macro", "blocked_data_missing"]
 CardStatus = Literal["scouted", "reviewed", "queued", "in_progress", "promoted", "refuted", "parked"]
+ExperimentOutcome = Literal["pending", "passed", "failed", "inconclusive"]
 
 # v1.0.0 锁定数据集中已实际就绪的数据表
 READY_TABLES: frozenset[str] = frozenset(
@@ -59,6 +60,19 @@ REQUIRED_BODY_SECTIONS: tuple[str, ...] = (
     "## 4. 亮点, 假设与失效边界",
     "## 5. 实证结论",
 )
+
+
+class ExperimentRecord(BaseModel):
+    """研究卡片关联的单次实证实验登记记录"""
+
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    name: str = Field(..., min_length=2)
+    config_file: str = Field(..., min_length=5, pattern=r"^.*\.ya?ml$")
+    report_path: str | None = None
+    ran_at: date | None = None
+    outcome: ExperimentOutcome = "pending"
+    summary: str | None = Field(default=None, max_length=300)
 
 
 class ResearchCard(BaseModel):
@@ -96,7 +110,8 @@ class ResearchCard(BaseModel):
     tags: list[str] = Field(..., min_length=1)
     status: CardStatus = "scouted"
     scouted_at: date
-    experiment_ref: str | None = None
+    experimented: bool = False
+    experiments: list[ExperimentRecord] = Field(default_factory=list)
 
     @field_validator("tags")
     @classmethod
@@ -115,11 +130,26 @@ class ResearchCard(BaseModel):
         return list(dict.fromkeys(cleaned))
 
     @model_validator(mode="after")
-    def _check_feasibility_against_ready_tables(self) -> ResearchCard:
+    def _check_feasibility_and_experiments(self) -> ResearchCard:
         if self.feasibility == "ready":
             missing = [t for t in self.data_required if t not in READY_TABLES]
             if missing:
                 raise ValueError(
                     f"feasibility 为 ready, 但 data_required 包含当前未就绪表: {missing}"
                 )
+
+        if self.experimented and not self.experiments:
+            raise ValueError("experimented 为 True 时, experiments 列表不能为空")
+        if not self.experimented and self.experiments:
+            raise ValueError("experiments 非空时, experimented 必须为 True")
+
+        seen_names: set[str] = set()
+        seen_configs: set[str] = set()
+        for exp in self.experiments:
+            if exp.name in seen_names:
+                raise ValueError(f"experiments 中存在重复实验名称: {exp.name}")
+            if exp.config_file in seen_configs:
+                raise ValueError(f"experiments 中存在重复配置文件: {exp.config_file}")
+            seen_names.add(exp.name)
+            seen_configs.add(exp.config_file)
         return self

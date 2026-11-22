@@ -123,11 +123,12 @@ def build_index(research_root: Path = Path("research")) -> tuple[Path, Path]:
     # 生成人眼速览总览表 INDEX.md
     status_counts = Counter(c.status for c, _ in cards)
     feas_counts = Counter(c.feasibility for c, _ in cards)
+    experimented_count = sum(1 for c, _ in cards if c.experimented)
 
     lines: list[str] = [
         "# Quant Research Lab 研究总览 (自动生成, 请勿手改)",
         "",
-        f"- **累计研究卡片**: {len(cards)}",
+        f"- **累计研究卡片**: {len(cards)} (已实证: {experimented_count})",
         "- **状态分布**: "
         + (", ".join(f"`{k}`: {v}" for k, v in sorted(status_counts.items())) or "暂无"),
         "- **数据可行性**: "
@@ -143,14 +144,20 @@ def build_index(research_root: Path = Path("research")) -> tuple[Path, Path]:
     for group_key in sorted(by_domain):
         lines.append(f"## {group_key}")
         lines.append("")
-        lines.append("| ID | 标题 | 模型范式 | 研究对象 | 可行性 | 状态 | 一句话总结 |")
-        lines.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
+        lines.append("| ID | 标题 | 模型范式 | 研究对象 | 可行性 | 状态 | 实验记录 | 一句话总结 |")
+        lines.append("| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |")
         for card, md_path in by_domain[group_key]:
             rel = md_path.relative_to(research_root).as_posix()
             title_link = f"[{card.title} ({card.year})](./{rel})"
+            if card.experimented:
+                exp_configs = ", ".join(f"`{Path(e.config_file).name}`" for e in card.experiments)
+                exp_col = f"已实验 ({len(card.experiments)}): {exp_configs}"
+            else:
+                exp_col = "未实验"
             lines.append(
                 f"| `{card.id}` | {title_link} | `{card.model_family}` | "
-                f"{card.target_object} | `{card.feasibility}` | `{card.status}` | {card.one_liner} |"
+                f"{card.target_object} | `{card.feasibility}` | `{card.status}` | "
+                f"{exp_col} | {card.one_liner} |"
             )
         lines.append("")
 
@@ -168,6 +175,7 @@ def query_catalog(
     status: str | None = None,
     model_family: str | None = None,
     tag: str | None = None,
+    experimented: bool | None = None,
 ) -> list[dict[str, Any]]:
     """按条件快速筛选 catalog.jsonl 中的研究卡片记录
 
@@ -179,6 +187,7 @@ def query_catalog(
         status: 按研究状态筛选 (如 scouted / queued), 可选
         model_family: 按核心建模范式筛选, 可选
         tag: 按单个标签筛选 (大小写不敏感), 可选
+        experimented: 按是否已做过实验筛选, 可选
 
     Returns:
         list[dict[str, Any]]: 命中的研究卡片元数据字典列表
@@ -212,6 +221,8 @@ def query_catalog(
         if model_family is not None and rec.get("model_family") != model_family:
             continue
         if tag_lower is not None and tag_lower not in rec.get("tags", []):
+            continue
+        if experimented is not None and rec.get("experimented") is not experimented:
             continue
         matched.append(rec)
     return matched

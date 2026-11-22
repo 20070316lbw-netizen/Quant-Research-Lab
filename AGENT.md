@@ -1,7 +1,7 @@
 ## 工程与代码规范
 
 - 代码注释中不能使用句号, 如果必须使用, 用回车来换行替代
-- 项目不需要 cli 命令行启动, 所以不要使用 argparse
+- 项目不需要 cli 命令行启动, 禁止使用 `argparse` 等命令行参数解析器; 若存在多组参数、不同实验或任务切换等原本依赖命令行传参的场景, 统一使用 YAML 配置文件管理参数, 在对应脚本中调用 `quant_research_lab.experiments.load_experiment_config` 并通过修改配置文件名来切换运行
 - 不许为了兼容旧代码而保留旧名字和旧接口
 - 所有 commit 信息统一使用 `类型: 中文描述` 格式, 例如 `feat: 新增动量因子`, 类型可使用 feat、fix、docs、test、refactor、chore 等英文标识; 类型标记后的描述统一使用中文
 
@@ -52,7 +52,7 @@
 ### 4. 实证实现与实验记录 (`src/quant_research_lab/experiments/`)
 
 - **按卡片归档**: 立项实验统一放置在 `src/quant_research_lab/experiments/` 下, 并与研究卡片 `id` 一一对应
-- **显式声明实验口径**: 每个实验必须在代码与输出中固定并记录:
+- **显式声明实验口径**: 每个实验的参数必须沉淀在独立 YAML 配置文件中 (由实验脚本调用 `load_experiment_config` 读取并通过更换配置文件名切换运行, 禁止命令行传参), 并在配置与输出中固定记录:
   - 样本区间、样本内/样本外或滚动窗口切分方式 (`walk_forward_splits` / `purged_kfold_splits`)
   - 基准对照 (如传统因子基准、`SPY` 或无风险利率 `RF`)
   - 交易执行口径 (`t` 日收盘或 `t+1` 日开盘建仓)、调仓频率、冷启动与停牌处理规则
@@ -71,5 +71,5 @@
 
 ### 6. 实证闭环与测试验证 (Close the Loop)
 
-- **回填研究卡片**: 实验完成后必须更新对应卡片的"5. 实证结论"章节与 `experiment_ref`, 按实证结果并经人工确认更新 `status` (`promoted` / `refuted` / `parked`), 随后运行 `build_index` 刷新 `research/INDEX.md` 与 `research/catalog.jsonl`
+- **回填研究卡片**: 实验完成后必须更新对应卡片的"5. 实证结论"章节, 将 `experimented` 设为 `true` 并在 `experiments` 列表中登记实验名称, 对应 YAML 配置文件名与轻量报告路径; 轻量报告 (`summary.json` / `report.md`) 入 Git 托管, 大体积 CSV/Parquet 明细不入 Git; 按实证结果并经人工确认更新 `status` (`promoted` / `refuted` / `parked`), 随后运行 `build_index` 刷新 `research/INDEX.md` 与 `research/catalog.jsonl`
 - **单元测试兜底**: 新增核心计算函数或实验可复用模块必须配套 `tests/` 单元测试, 优先用解析解或合成数据验证数学正确性与无前视偏差 (如修改未来数据不得改变历史信号), 提交前确保 `uv run pytest` 全部通过

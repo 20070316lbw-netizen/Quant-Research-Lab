@@ -1,0 +1,62 @@
+meta:
+  card_id: "eq-cs-001"
+  name: "residual_momentum_baseline"
+  seed: 42
+  notes: "Blitz et al. (2011) 残差动量 vs 传统 12-1 动量基准对照"
+
+data:
+  dataset_version: "v1.0.0"
+  db_path: "data/lab.duckdb"
+  start_date: "2011-01-03"
+  end_date: "2026-08-18"
+  universe: "SP500"
+  tables:
+    - "prices"
+    - "universe"
+    - "ff_factors_daily"
+  benchmark:
+    market_ticker: "SPY"
+    risk_free_col: "rf"
+
+split:
+  method: "holdout"
+  is_end_date: "2020-12-31"
+  oos_start_date: "2021-01-01"
+  purge_days: 21
+  embargo_days: 5
+
+execution:
+  rebalance_freq: "monthly"
+  signal_lag_days: 1
+  price_field: "adj_close"
+  weighting: "equal"
+  long_short:
+    enabled: true
+    n_quantiles: 10
+  cost_bps_default: 10.0
+  cost_bps_grid: [0.0, 5.0, 10.0, 20.0, 30.0]
+  min_history_days: 252
+
+audit:
+  n_trials: 1
+  alpha: 0.05
+  p_adjust_method: "bh"
+  nw_lags: 6
+  annualization_factor: 12
+
+model:
+  family: "factor_residual"
+  params:
+    regression_window_months: 36
+    min_regression_months: 24
+    formation_months: 12
+    skip_recent_months: 1
+    factors: ["mkt_rf", "smb", "hml"]
+    standardize_residual: true
+    compare_raw_momentum: true
+
+output:
+  dir: "outputs/eq-cs-001"
+  save_returns: true
+  save_weights: false
+  save_report_md: true

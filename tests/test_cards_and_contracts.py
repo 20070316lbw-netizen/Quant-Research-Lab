@@ -13,6 +13,7 @@ from pydantic import ValidationError
 
 from quant_research_lab.cards import (
     CardValidationError,
+    ExperimentRecord,
     ResearchCard,
     build_index,
     check_duplicate,
@@ -99,6 +100,44 @@ class TestCardsModule(unittest.TestCase):
             self.assertEqual(len(load_all_cards(root)), 1)
             self.assertEqual(len(query_catalog(root, feasibility="ready", tag="MOMENTUM")), 1)
             self.assertEqual(len(query_catalog(root, status="promoted")), 0)
+            self.assertEqual(len(query_catalog(root, experimented=False)), 1)
+            self.assertEqual(len(query_catalog(root, experimented=True)), 0)
+
+    def test_experiment_tracking_consistency_guard(self) -> None:
+        # experimented 为 True 但 experiments 为空必须报错
+        with self.assertRaises(ValidationError):
+            _make_sample_card(experimented=True, experiments=[])
+
+        exp = ExperimentRecord(
+            name="residual_momentum_baseline",
+            config_file="configs/eq-cs-001_residual_momentum.yaml",
+            report_path="outputs/eq-cs-001/residual_momentum_baseline/report.md",
+            ran_at=date(2026, 11, 22),
+            outcome="passed",
+            summary="样本外多空夏普 0.85",
+        )
+        # experiments 非空但 experimented 为 False 必须报错
+        with self.assertRaises(ValidationError):
+            _make_sample_card(experimented=False, experiments=[exp])
+
+        # 重复配置文件必须报错
+        exp_dup = ExperimentRecord(
+            name="residual_momentum_v2",
+            config_file="configs/eq-cs-001_residual_momentum.yaml",
+        )
+        with self.assertRaises(ValidationError):
+            _make_sample_card(experimented=True, experiments=[exp, exp_dup])
+
+        # 合法登记并在 INDEX.md 中体现
+        card = _make_sample_card(experimented=True, experiments=[exp])
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "research"
+            write_card(card, research_root=root)
+            index_md, _ = build_index(root)
+            index_text = index_md.read_text(encoding="utf-8")
+            self.assertIn("已实验 (1)", index_text)
+            self.assertIn("eq-cs-001_residual_momentum.yaml", index_text)
+            self.assertEqual(len(query_catalog(root, experimented=True)), 1)
 
 
 class TestDataContractsAndStatResult(unittest.TestCase):

@@ -30,7 +30,8 @@ tags:
 - fama_french
 status: scouted
 scouted_at: '2026-11-22'
-experiment_ref: null
+experimented: false
+experiments: []
 ---
 
 # Residual Momentum

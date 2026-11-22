@@ -16,6 +16,7 @@ from quant_research_lab.cards.io import (
 from quant_research_lab.cards.schema import (
     READY_TABLES,
     REQUIRED_BODY_SECTIONS,
+    ExperimentRecord,
     ResearchCard,
 )
 
@@ -23,6 +24,7 @@ __all__ = [
     "READY_TABLES",
     "REQUIRED_BODY_SECTIONS",
     "CardValidationError",
+    "ExperimentRecord",
     "ResearchCard",
     "build_index",
     "check_duplicate",

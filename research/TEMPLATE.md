@@ -25,7 +25,8 @@ tags:
   - "example"
 status: "scouted"
 scouted_at: "2026-11-22"
-experiment_ref: null
+experimented: false
+experiments: []
 ---
 
 # 论文或项目原始标题
