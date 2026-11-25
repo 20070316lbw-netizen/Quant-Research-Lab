@@ -1,0 +1,18 @@
+{
+  "n_obs": 4759,
+  "weeks": 429,
+  "tickers": 12,
+  "first": "2012-01-10",
+  "last": "2021-12-28",
+  "r2": 0.5083601997979181,
+  "raw_bars": 1312176,
+  "days": 27337,
+  "valid_days": 27178,
+  "annual_files": 115,
+  "snapshot": 300,
+  "n_trials": 1,
+  "daily_crosscheck_n": 27104,
+  "daily_return_corr": 0.9461841204476867,
+  "daily_median_abs_diff": 6.564773686899405e-06,
+  "daily_max_abs_diff": 0.5918280532200986
+}
