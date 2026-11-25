@@ -1,0 +1,8 @@
+predictor_start: 1959Q1
+target_start: 1960Q1
+target_end: 1995Q1
+forecast_start: 1971Q1
+horizons: [1, 2, 4, 6]
+bill_days: 91
+rates_url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10,TB3MS
+cycles_url: https://www.nber.org/research/data/us-business-cycle-expansions-and-contractions

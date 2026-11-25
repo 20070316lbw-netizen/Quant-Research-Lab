@@ -25,10 +25,16 @@ tags:
 - yield_curve
 - recession
 - probit
-status: scouted
+status: in_progress
 scouted_at: '2026-11-25'
-experimented: false
-experiments: []
+experimented: true
+experiments:
+- name: us_term_spread_probit
+  config_file: replications/macro-ind-001/configs/us.yaml
+  report_path: replications/macro-ind-001/docs/03_repro_report.md
+  ran_at: '2026-11-25'
+  outcome: inconclusive
+  summary: 美国单指标概率和期限模式接近原文, 跨指标排名尚待验证
 ---
 
 # The Yield Curve as a Predictor of U.S. Recessions
@@ -46,4 +52,4 @@ experiments: []
 区分用全样本估出的概率刻度与当年可形成的预警。历史衰退次数少, 同一次衰退会覆盖多个季度。后见定年的标签会影响实时解释。
 
 ## 5. 实证结论
-待立项。原文报告对 1990Q4 提前一年预测为 25%。[复现规格书](../../replications/macro-ind-001/docs/01_paper_spec.md)
+美国利差模型提前一年对 1990Q4 的估计为 27.23% (原文 25%)。12 档利差阈值平均绝对差 0.078 个百分点。三种比较指标的独立复算仍待补齐。[报告](../../replications/macro-ind-001/docs/03_repro_report.md)
