@@ -1,7 +1,7 @@
 [project]
 name = "quant-research-lab"
 version = "0.1.0"
-description = "Add your description here"
+description = "金融与宏观实证研究的论文复现、数据处理与统计检验"
 readme = "README.md"
 authors = [
     { name = "20070316lbw-netizen", email = "244884540+20070316lbw-netizen@users.noreply.github.com" }
