@@ -19,6 +19,7 @@
 | 02c | 现有数据缺口分析与免费权威数据源清单 | [02c-external-free-data.md](./02c-external-free-data.md) | 草案待审 |
 | 03 | 金融市场 (S&P 500)与宏观经济研究域地图 | [03-research-domains.md](./03-research-domains.md) | 草案待审 |
 | 04 | 统计学工具库设计 | [04-statistics-toolkit.md](./04-statistics-toolkit.md) | 草案待审 |
+| 05 | 实验配置与复现产物 | [05-experiment-config.md](./05-experiment-config.md) | 见配置规范 |
 
 ---
 
