@@ -25,7 +25,7 @@ tags:
 - yield_curve
 - recession
 - probit
-status: in_progress
+status: parked
 scouted_at: '2026-11-25'
 experimented: true
 experiments:
