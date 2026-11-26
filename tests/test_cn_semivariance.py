@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 import yaml
 
 
@@ -45,3 +46,34 @@ def test_complete_week_and_first_bar(tmp_path: Path):
         w.loc[0, ["rsp", "rsn", "ret"]].astype(float),
         [0.01 * np.sqrt(252), 0.02 * np.sqrt(252), 0.10],
     )
+
+
+def test_qlib_offset_and_missing(tmp_path: Path):
+    from quant_research_lab.data import read_qlib_feature
+
+    calendar = pd.date_range("2020-01-01", periods=3)
+    path = tmp_path / "volume.day.bin"
+    np.array([1, np.nan, 18], dtype="<f4").tofile(path)
+    expected = pd.Series(
+        [np.nan, 18.0], index=calendar[1:].rename("date"), name="volume"
+    )
+    pd.testing.assert_series_equal(read_qlib_feature(path, calendar), expected)
+    with pytest.raises(ValueError, match="超出"):
+        read_qlib_feature(path, calendar[:2])
+
+
+def test_intraday_variance_excludes_overnight():
+    from quant_research_lab.stats import realized_semivariance
+
+    idx = pd.DatetimeIndex(
+        ["2020-01-01 10:00", "2020-01-01 11:00", "2020-01-02 10:00"], name="date"
+    )
+    bars = pd.DataFrame({"open": [1.0, 2.0, 9.0], "close": [2.0, 1.0, 9.0]}, index=idx)
+    daily = realized_semivariance(bars)
+    variance = np.log(2.0) ** 2
+    np.testing.assert_allclose(
+        daily, [[variance, variance, 2 * variance], [0.0, 0.0, 0.0]]
+    )
+    assert realized_semivariance(bars.iloc[:0]).empty
+    with pytest.raises(ValueError):
+        realized_semivariance(bars.assign(close=np.nan))

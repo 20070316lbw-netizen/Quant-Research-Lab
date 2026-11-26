@@ -3,9 +3,8 @@
 import json
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
-from scipy.stats import t
+from statsmodels.regression.linear_model import OLS
 
 ROOT = Path(__file__).resolve().parents[1]
 clean = ROOT / "data/clean"
@@ -19,40 +18,35 @@ x = pd.concat(
     axis=1,
 )
 x.insert(0, "const", 1.0)
-X = x.to_numpy(dtype=float)
-y = w.ret.to_numpy()
-coef, _, rank, _ = np.linalg.lstsq(X, y, rcond=None)
-n, k = X.shape
-assert rank == k
-resid = y - X @ coef
-# 以同一周为聚类组, 保留组内股票残差的同期相关
-scores = pd.DataFrame(X * resid[:, None]).groupby(w.week).sum().to_numpy()
-g = len(scores)
-bread = np.linalg.inv(X.T @ X)
-cov = (g / (g - 1)) * ((n - 1) / (n - k)) * bread @ (scores.T @ scores) @ bread
-se = np.sqrt(np.diag(cov))
-q = t.ppf(0.975, g - 1)
-est = pd.DataFrame(
-    {
-        "term": x.columns,
-        "estimate": coef,
-        "se_week": se,
-        "ci_low": coef - q * se,
-        "ci_high": coef + q * se,
-        "p_week": 2 * t.sf(abs(coef / se), g - 1),
-    }
+# 按周聚类, 使用有限样本修正与聚类组数减一的 t 自由度
+fit = OLS(w.ret, x.astype(float)).fit(
+    cov_type="cluster", cov_kwds={"groups": w.week, "use_correction": True}, use_t=True
+)
+interval = fit.conf_int()
+est = (
+    pd.DataFrame(
+        {
+            "estimate": fit.params,
+            "se_week": fit.bse,
+            "ci_low": interval[0],
+            "ci_high": interval[1],
+            "p_week": fit.pvalues,
+        }
+    )
+    .rename_axis("term")
+    .reset_index()
 )
 out = ROOT / "outputs/tables"
 est.to_csv(out / "table1.csv", index=False)
 pair = pd.read_csv(clean / "daily_crosscheck.csv")
 coverage = pd.read_csv(out / "coverage.csv")
 summary = {
-    "n_obs": n,
-    "weeks": g,
+    "n_obs": int(fit.nobs),
+    "weeks": w.week.nunique(),
     "tickers": w.ticker.nunique(),
     "first": str(w.week.min().date()),
     "last": str(w.week.max().date()),
-    "r2": 1 - resid @ resid / ((y - y.mean()) @ (y - y.mean())),
+    "r2": fit.rsquared,
     "raw_bars": int(coverage.bars.sum()),
     "days": int(coverage.days.sum()),
     "valid_days": int(coverage.valid_days.sum()),

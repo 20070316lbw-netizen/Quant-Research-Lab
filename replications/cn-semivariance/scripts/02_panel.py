@@ -6,6 +6,9 @@ import numpy as np
 import pandas as pd
 import yaml
 
+from quant_research_lab.data import read_qlib_feature
+from quant_research_lab.stats import realized_semivariance
+
 ROOT = Path(__file__).resolve().parents[1]
 raw = ROOT / "data/raw"
 clean = ROOT / "data/clean"
@@ -27,11 +30,7 @@ crosschecks = []
 for industry, tickers in cfg["industries"].items():
     for ticker in tickers:
         assert ticker.upper() in set(snapshot.ticker)
-        buf = np.fromfile(raw / f"{ticker}.bin", dtype="<f4")
-        offset = int(buf[0])
-        close = pd.Series(
-            buf[1:].astype(float), index=calendar[offset : offset + len(buf) - 1]
-        )
+        close = read_qlib_feature(raw / f"{ticker}.bin", calendar)
         # 分别取得相邻两个自然周最后交易日的收盘, 空周不会跨过
         last = (
             close.reindex(calendar)
@@ -55,22 +54,16 @@ for industry, tickers in cfg["industries"].items():
             good_grid & valid.groupby(bars["日期"]).all() & (groups["成交量"].sum() > 0)
         )
         bars = bars[bars["日期"].isin(good_day[good_day].index)].copy()
-        prev = bars.groupby("日期")["收盘"].shift()
-        prev = prev.mask(bars["时间"].eq("09:35"), bars["开盘"])
-        r = np.log(bars["收盘"] / prev)
-        day = (
-            pd.DataFrame(
-                {"pos": r.clip(lower=0) ** 2, "neg": r.clip(upper=0) ** 2, "rv": r**2}
-            )
-            .groupby(bars["日期"])
-            .sum()
+        prices = bars.rename(columns={"开盘": "open", "收盘": "close"})[
+            ["open", "close"]
+        ]
+        prices.index = pd.DatetimeIndex(
+            pd.to_datetime(bars["日期"] + " " + bars["时间"]), name="date"
         )
-        np.testing.assert_allclose(day.pos + day.neg, day.rv, atol=1e-14)
-        day.index = pd.to_datetime(day.index)
+        day = realized_semivariance(prices)
         assert day.index.isin(calendar).all()
         weeks = day.resample("W-TUE")
-        w = np.sqrt(252 / 5 * weeks[["neg", "pos"]].sum(min_count=5))
-        w.columns = ["rsn", "rsp"]
+        w = np.sqrt(252 / 5 * weeks[["rsn", "rsp"]].sum(min_count=5))
         w = w.loc[weeks.size().eq(5)].join(ret).dropna()
         w = w[w.index.year.isin(cfg["years"])]
         panels.append(w.assign(ticker=ticker, industry=industry))
