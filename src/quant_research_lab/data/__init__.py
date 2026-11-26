@@ -27,6 +27,7 @@ from quant_research_lab.data.p0_fetch import (
     fetch_cboe_vol_indices,
     fetch_ken_french_daily,
 )
+from quant_research_lab.data.qlib import read_qlib_feature
 from quant_research_lab.data.sync import (
     DEFAULT_GH_REPO,
     DEFAULT_HF_REPO_ID,
@@ -62,6 +63,7 @@ __all__ = [
     "pull_from_github_release",
     "pull_from_hf",
     "push_to_hf",
+    "read_qlib_feature",
     "require_panel",
     "validate_panel",
     "validate_signal",

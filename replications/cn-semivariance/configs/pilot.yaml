@@ -1,0 +1,11 @@
+provider: OpenFinMind/stock_dataset
+revision: 51f2e1ea9c53fa9a8c47412724ff18559440521d
+snapshot: '2022-11-30'
+years: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021]
+seed: 0
+industries:
+  bank: [sh600000, sh600036, sz000001]
+  insurance: [sh601318, sh601601, sh601628]
+  liquor: [sh600519, sz000858, sz000568]
+  appliances: [sz000651, sh600690, sz000333]
+qlib_release: https://github.com/chenditc/investment_data/releases/download/2026-11-24/qlib_bin.tar.gz

@@ -11,6 +11,7 @@ from quant_research_lab.stats.factor import (
     summarize_ic,
     winsorize_cs,
 )
+from quant_research_lab.stats.realized import realized_semivariance
 from quant_research_lab.stats.result import StatResult
 from quant_research_lab.stats.timeseries import (
     adf_test,
@@ -48,6 +49,7 @@ __all__ = [
     "probabilistic_sharpe_ratio",
     "purged_kfold_splits",
     "quantile_portfolio_returns",
+    "realized_semivariance",
     "run_event_study",
     "standardize_cs",
     "summarize_ic",
